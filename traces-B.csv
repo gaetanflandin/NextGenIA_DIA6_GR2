@@ -1,0 +1,126 @@
+﻿"case_id","sql_request","llm_result","reference_result","verdict"
+"C01","SELECT COALESCE(SUM(o.quantity_product * p.price), 0) AS revenue_cents
+FROM orders o
+JOIN product p ON o.product_id = p.product_id
+WHERE o.date >= '2026-03-01 00:00:00'
+  AND o.date <  '2026-06-01 00:00:00';","792800","792800","correct"
+"C02","SELECT COALESCE(SUM(o.quantity_product * p.price), 0) AS revenue_cents
+FROM orders o
+JOIN customers c ON o.customer_id = c.customer_id
+JOIN product p ON o.product_id = p.product_id
+WHERE c.birth_date > '2025-09-25' AND c.birth_date <= '2026-09-25';","0","590320","incorrect"
+"C03","SELECT COALESCE(SUM(o.quantity_product * p.price), 0) AS revenue_cents
+FROM orders o
+JOIN product p ON o.product_id = p.product_id
+WHERE o.product_id IN ('a', 'b', 'c')
+  AND o.date >= '2026-01-01 00:00:00'
+  AND o.date <  '2026-07-01 00:00:00';","936350","936350","correct"
+"C04","SELECT COALESCE(SUM(o.quantity_product * p.price), 0) AS revenue_cents
+FROM orders o
+JOIN product p ON o.product_id = p.product_id
+WHERE o.date >= '2026-01-01 00:00:00'
+  AND o.date <  '2026-10-01 00:00:00';","2826250","2826250","correct"
+"C05","SELECT COALESCE(SUM(o.quantity_product * p.price), 0) AS revenue_cents
+FROM orders o
+JOIN product p ON o.product_id = p.product_id
+WHERE o.date >= '2026-06-01 00:00:00'
+  AND o.date <  '2026-06-02 00:00:00';","38480","38480","correct"
+"C06","SELECT COALESCE(SUM(o.quantity_product * p.price), 0) AS revenue_cents
+FROM orders o
+JOIN product p ON o.product_id = p.product_id
+WHERE o.date >= '2025-01-01 00:00:00'
+  AND o.date <  '2026-01-01 00:00:00';","0","0","correct"
+"C07","SELECT COALESCE(SUM(o.quantity_product * p.price), 0) AS revenue_cents
+FROM orders o
+JOIN product p ON o.product_id = p.product_id
+WHERE o.date >= '2026-05-31 00:00:00'
+  AND o.date <  '2026-06-01 00:00:00';","13970","13970","correct"
+"C08","SELECT COALESCE(SUM(o.quantity_product * p.price), 0) AS revenue_cents
+FROM orders o
+JOIN customers c ON o.customer_id = c.customer_id
+JOIN product p ON o.product_id = p.product_id
+WHERE c.birth_date >= '2001-09-24'
+  AND c.birth_date <  '2002-09-24';","388500","605580","incorrect"
+"C09","SELECT COALESCE(SUM(o.quantity_product * p.price), 0) AS revenue_cents
+FROM orders o
+JOIN customers c ON o.customer_id = c.customer_id
+JOIN product p ON o.product_id = p.product_id
+WHERE c.birth_date > '2000-09-26'
+  AND c.birth_date <= '2001-09-26';","487980","487980","correct"
+"C10","SELECT COALESCE(SUM(o.quantity_product * p.price),0) AS revenue_cents
+FROM orders o
+JOIN customers c ON o.customer_id = c.customer_id
+JOIN product p ON o.product_id = p.product_id
+WHERE (strftime('%Y', o.date) - strftime('%Y', c.birth_date)
+       - CASE WHEN strftime('%m-%d', o.date) < strftime('%m-%d', c.birth_date) THEN 1 ELSE 0 END) = 25;","558980","558980","correct"
+"C11","SELECT COALESCE(SUM(o.quantity_product * p.price), 0) AS revenue_cents
+FROM orders o
+JOIN customers c ON o.customer_id = c.customer_id
+JOIN product p ON o.product_id = p.product_id
+WHERE c.birth_date BETWEEN '2001-01-01' AND '2001-12-01';","446690","446690","correct"
+"C12","SELECT COALESCE(SUM(o.quantity_product * p.price), 0) AS revenue_cents
+FROM orders o
+JOIN product p ON o.product_id = p.product_id
+WHERE o.product_id IN ('a', 'b', 'c');","1666490","1666490","correct"
+"C13","SELECT COALESCE(SUM(o.quantity_product * p.price), 0) AS revenue_cents
+FROM orders o
+JOIN product p ON o.product_id = p.product_id
+WHERE p.product_id IN ('a', 'c')
+  AND o.date >= '2026-04-01 00:00:00'
+  AND o.date <  '2026-05-01 00:00:00';","107740","107740","correct"
+"C14","SELECT COALESCE(SUM(o.quantity_product * p.price), 0) AS revenue_cents
+FROM orders o
+JOIN product p ON o.product_id = p.product_id
+WHERE o.date >= '2026-10-01 00:00:00'
+  AND o.date <  '2026-12-01 00:00:00'
+  AND o.product_id IN ('a', 'b', 'c');","0","0","correct"
+"C15","SELECT COALESCE(SUM(o.quantity_product * p.price), 0) AS revenue_cents
+FROM orders o
+JOIN customers c ON o.customer_id = c.customer_id
+JOIN product p ON o.product_id = p.product_id
+WHERE o.date >= '2026-03-01 00:00:00'
+  AND o.date <  '2026-06-01 00:00:00'
+  AND c.birth_date >= '2000-09-26'
+  AND c.birth_date <= '2001-09-25';","168680","168680","correct"
+"C16","SELECT COALESCE(SUM(o.quantity_product * p.price),0) AS revenue_cents
+FROM orders o
+JOIN customers c ON o.customer_id = c.customer_id
+JOIN product p ON o.product_id = p.product_id
+WHERE o.product_id IN ('a','b','c')
+  AND (CAST(strftime('%Y','2026-09-25') AS INTEGER) - CAST(strftime('%Y',c.birth_date) AS INTEGER)
+       - CASE WHEN strftime('%m-%d','2026-09-25') < strftime('%m-%d',c.birth_date) THEN 1 ELSE 0 END) = 25;","376740","376740","correct"
+"C17","SELECT COALESCE(SUM(o.quantity_product * p.price),0) AS revenue_cents
+FROM orders o
+JOIN product p ON o.product_id = p.product_id
+JOIN customers c ON o.customer_id = c.customer_id
+WHERE p.product_id IN ('a','b','c')
+  AND o.date >= '2026-01-01 00:00:00'
+  AND o.date <  '2026-07-01 00:00:00'
+  AND c.birth_date <= '2001-09-25'
+  AND c.birth_date >  '2000-09-25';","258180","258180","correct"
+"C18","SELECT COALESCE(SUM(o.quantity_product * p.price), 0) AS revenue_cents
+FROM orders o
+JOIN customers c ON o.customer_id = c.customer_id
+JOIN product p ON o.product_id = p.product_id
+WHERE o.date >= '2026-05-01 00:00:00'
+  AND o.date <  '2026-06-01 00:00:00'
+  AND (
+        (strftime('%Y', o.date) - strftime('%Y', c.birth_date))
+        - CASE
+            WHEN strftime('%m-%d', o.date) < strftime('%m-%d', c.birth_date) THEN 1
+            ELSE 0
+          END
+      ) = 25;","62480","62480","correct"
+"C19","SELECT COALESCE(SUM(o.quantity_product * p.price), 0) AS revenue_cents
+FROM orders o
+JOIN customers c ON o.customer_id = c.customer_id
+JOIN product p ON o.product_id = p.product_id
+WHERE o.date >= '2026-09-01 00:00:00'
+  AND o.date <  '2026-10-01 00:00:00'
+  AND o.product_id = 'd'
+  AND c.birth_date > '2000-09-25'
+  AND c.birth_date <= '2001-09-25';","1990","1990","correct"
+"C20","SELECT COALESCE(SUM(o.quantity_product * p.price), 0) AS revenue_cents
+FROM orders o
+JOIN product p ON o.product_id = p.product_id
+WHERE o.date >= '2026-06-01 00:00:00' AND o.date < '2026-09-01 00:00:00';","1106090","1106090","correct"
