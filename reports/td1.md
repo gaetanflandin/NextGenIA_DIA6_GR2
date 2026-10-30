@@ -1,6 +1,6 @@
 ﻿# Rapport TD1 — SQL généré par cinq modèles
 
-Date : 21 octobre 2026. Dépôt : https://github.com/gaetanflandin/NextGenIA_DIA6_GR2/reports
+Date : 21 octobre 2026. Dépôt : https://github.com/gaetanflandin/NextGenIA_DIA6_GR2
 
 ## Travail réalisé et livrables
 
