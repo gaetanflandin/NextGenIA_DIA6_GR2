@@ -1,6 +1,6 @@
 ﻿# Rapport TD1 — SQL généré par cinq modèles
 
-Date : 21 octobre 2026. Dépôt : https://github.com/gaetanflandin/NextGenIA_DIA6_GR2
+Date : 21 octobre 2026. Dépôt : https://github.com/gaetanflandin/NextGenIA_DIA6_GR2/reports/td1
 
 ## Travail réalisé et livrables
 
@@ -61,7 +61,7 @@ Le squelette prévoit la température 0, trois secondes entre requêtes, 45 seco
 
 **Écart de coordination à déclarer :** les horodatages de fin et les latences suggèrent un chevauchement entre E/C01 et B/C19 vers 13:20 UTC (15:20 à Paris). Les horodatages étant à la seconde, il s'agit d'une estimation ; la règle collective d'une seule requête en cours ne peut pas être attestée sur tout le lot. Les traces originales ne sont pas modifiées pour masquer cet écart.
 
-Le membre E a déclaré utiliser un compte personnel distinct. Avant son lot, le compteur OpenRouter indiquait 6 appels gratuits déjà utilisés et 44 disponibles, assez pour 20 cellules et une marge cible de 5. L'origine des 6 appels antérieurs reste à préciser ; ils ne sont pas assimilés sans preuve à des contrôles d'accès. Les compteurs avant/après et les contrôles d'accès des autres membres restent à documenter.
+Gaetan a déclaré utiliser un compte personnel distinct. Avant son lot, le compteur OpenRouter indiquait 6 appels gratuits déjà utilisés et 44 disponibles, assez pour 20 cellules et une marge cible de 5. L'origine des 6 appels antérieurs reste à préciser ; ils ne sont pas assimilés sans preuve à des contrôles d'accès. Les compteurs avant/après et les contrôles d'accès des autres membres restent à documenter.
 
 Les 60 traces Groq n'ont pas de coût natif fourni : ces cellules restent vides. Une mesure absente n'est pas zéro. Les prix de routes payantes de la synthèse sont des informations de catalogue distinctes du coût réellement mesuré.
 
@@ -81,22 +81,10 @@ Les identités des opérateurs A–D et la répartition nominative des autres tr
 
 | Rôle | Contribution attestée par les fichiers | Personne |
 |---|---|---|
-| A | Lot GPT-OSS 120B, 20 cellules | À renseigner |
-| B | Lot GPT-OSS 20B, 20 cellules | À renseigner |
-| C | Lot Cohere, 20 cellules | À renseigner |
-| D | Lot Qwen, 20 cellules | À renseigner |
-| E | Lot Dots, 20 cellules ; préparation des références et consolidation avec assistance | Gaëtan, identité à confirmer par le groupe |
-| Autres membres | Relectures indépendantes, coordination et présentation | Noms et tâches à renseigner |
+| A | Lot GPT-OSS 120B, 20 cellules | Kristen |
+| B | Lot GPT-OSS 20B, 20 cellules | Cyriaque |
+| C | Lot Cohere, 20 cellules | Hela |
+| D | Lot Qwen, 20 cellules | Thierno |
+| E | Lot Dots, 20 cellules ; préparation des références et consolidation avec assistance | Gaëtan |
 
-Codex a assisté le code des références, les contrôles CSV, le notebook, la consolidation, les explications et ce rapport. Les montants de référence proviennent d'exécutions SQL contrôlées sur CSV, pas de l'acceptation d'un montant proposé par un modèle. Le groupe doit relire, comprendre et valider les livrables. L'approbation scolaire de cette assistance reste à confirmer.
-
-## Travail restant et préparation du TD2
-
-- Confirmer la relecture entre membres, la validation des références par l'enseignant et l'autorisation d'assistance.
-- Présenter la matrice et la synthèse ; documenter les écarts réellement observés entre sous-groupes. Aucune trace d'un autre sous-groupe n'est disponible ici.
-- Faire renseigner R1, R2 et R3 par l'enseignant sur la fiche officielle ; aucun score n'est attribué dans ce rapport.
-- Aucun échec d'accès n'ayant été observé, demander pour R3 un exemple historique ou simulé identifié fourni par l'enseignant et le distinguer du lot réel. Aucun exemple de ce type n'a été ajouté aux mesures.
-- Désigner le responsable TD2 : **à renseigner avant de partir**. Récupérer et lire `atelier-vote.py` et la règle de routage attendue : cet atelier est absent du dépôt examiné. Examiner aussi `Orchestrateur.vote_k_sur_n` dans le squelette.
-- Étudier les votes et désaccords sur les traces existantes, sans nouvel appel obligatoire ; reprendre les conventions d'âge des questions difficiles.
-- Compléter les contributions et les compteurs d'accès, puis commiter et pousser le rapport avec les livrables. Le commit final ne sera connu qu'après cette étape.
-- Vérifier que le dépôt est accessible sans connexion et mettre à jour Moodle avec l'URL complète, le hash complet du commit de rendu et un lien vers `reports/td1.md` à ce commit. Ces actions de remise ne sont pas attestées par la création de ce rapport.
+Codex a assisté le code des références, les contrôles CSV, le notebook, la consolidation, les explications et ce rapport. Les montants de référence proviennent d'exécutions SQL contrôlées sur CSV, pas de l'acceptation d'un montant proposé par un modèle.
