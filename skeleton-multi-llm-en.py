@@ -625,73 +625,47 @@ class Orchestrateur:
         on a wrong value.
         """
         n = len(traces_question)
+        if not isinstance(k, int) or isinstance(k, bool) or not (n // 2 < k <= n):
+            raise ValueError("k must be a strict majority of n")
 
-        # 2. k must be a strict majority of n
-        if not (n // 2 < k <= n):
-            raise ValueError(
-                f"k={k} is not a strict majority of n={n}: need n//2 < k <= n"
-            )
-
-        # 3. Reject duplicate (provider, model_requested): a duplicate is not a second vote
         seen = set()
-        for prop in traces_question:
-            provider = prop.provider if hasattr(prop, "provider") else prop["provider"]
-            model_requested = (
-                prop.model_requested
-                if hasattr(prop, "model_requested")
-                else prop["model_requested"]
-            )
-            key = (provider, model_requested)
-            if key in seen:
-                raise ValueError(
-                    f"Duplicate proposal for {provider}:{model_requested}"
-                )
-            seen.add(key)
+        for proposal in traces_question:
+            provider = proposal["provider"] if isinstance(proposal, dict) else getattr(proposal, "provider")
+            model = proposal["model_requested"] if isinstance(proposal, dict) else getattr(proposal, "model_requested")
+            member = (provider, model)
+            if member in seen:
+                raise ValueError("Duplicate panel member: provider:model_requested")
+            seen.add(member)
 
-        # 1. Collect votes: only executed proposals that carry a value vote.
-        #    An error or an unavailable member stays in n and casts no vote.
-        votes = {}  # value -> list of "provider:model_requested"
-        for prop in traces_question:
-            provider = prop.provider if hasattr(prop, "provider") else prop["provider"]
-            model_requested = (
-                prop.model_requested
-                if hasattr(prop, "model_requested")
-                else prop["model_requested"]
-            )
-            value = prop.value if hasattr(prop, "value") else prop["value"]
-            verdict = prop.verdict if hasattr(prop, "verdict") else prop["verdict"]
+        counts = {}
+        agreeing_models = {}
+        for proposal in traces_question:
+            if isinstance(proposal, dict):
+                verdict = proposal.get("verdict")
+                value = proposal.get("value")
+                provider = proposal.get("provider")
+                model = proposal.get("model_requested")
+            else:
+                verdict = getattr(proposal, "verdict", None)
+                value = getattr(proposal, "value", None)
+                provider = getattr(proposal, "provider", None)
+                model = getattr(proposal, "model_requested", None)
 
-            # Executed = SQL ran successfully (correct or incorrect verdict)
-            # and carries a non-empty value
-            if verdict not in ("correct", "incorrect"):
-                continue
-            if value is None or value == "":
-                continue
+            if verdict == "executed" and value is not None:
+                counts[value] = counts.get(value, 0) + 1
+                agreeing_models.setdefault(value, []).append(f"{provider}:{model}")
 
-            model_key = f"{provider}:{model_requested}"
-            votes.setdefault(value, []).append(model_key)
-
-        # 4. If a value reaches k votes, return consensus
-        best_count = 0
-        for value, models in votes.items():
-            count = len(models)
+        for value, count in counts.items():
             if count >= k:
                 return {
                     "consensus": True,
                     "value": value,
                     "votes": count,
-                    "models": models,
+                    "models": agreeing_models[value],
                 }
-            if count > best_count:
-                best_count = count
 
-        # 5. No consensus: return the largest count, never invent a value
-        return {
-            "consensus": False,
-            "value": None,
-            "votes": best_count,
-            "models": [],
-        }
+        largest = max(counts.values(), default=0)
+        return {"consensus": False, "value": None, "votes": largest, "models": []}
 
 
 # ==========================================================================

@@ -1,0 +1,6 @@
+model_id,period_rate,period_cells,completed_age_at_date_rate,completed_age_at_date_cells,age_at_order_rate,age_at_order_cells,product_list_rate,product_list_cells,combinations_rate,combinations_cells,global_rate
+cohere/north-mini-code:free,6/6 (100%),"C01,C04,C05,C06,C07,C20",0/4 (0%),,0/1 (0%),,4/4 (100%),"C03,C12,C13,C14",3/5 (60%),"C15,C16,C18",13/20 (65%)
+dots-studio/dots-3-note-preview:free,6/6 (100%),"C01,C04,C05,C06,C07,C20",1/4 (25%),C02,0/1 (0%),,4/4 (100%),"C03,C12,C13,C14",1/5 (20%),C16,12/20 (60%)
+openai/gpt-oss-120b,6/6 (100%),"C01,C04,C05,C06,C07,C20",4/4 (100%),"C02,C08,C09,C11",1/1 (100%),C10,4/4 (100%),"C03,C12,C13,C14",4/5 (80%),"C15,C16,C17,C18",19/20 (95%)
+openai/gpt-oss-20b,6/6 (100%),"C01,C04,C05,C06,C07,C20",2/4 (50%),"C09,C11",1/1 (100%),C10,4/4 (100%),"C03,C12,C13,C14",5/5 (100%),"C15,C16,C17,C18,C19",18/20 (90%)
+qwen/qwen3.8-27b,6/6 (100%),"C01,C04,C05,C06,C07,C20",3/4 (75%),"C02,C08,C11",0/1 (0%),,4/4 (100%),"C03,C12,C13,C14",1/5 (20%),C18,14/20 (70%)
