@@ -1,1 +1,9 @@
 # NextGenIA - DIA6 GR2
+
+Gaëtan FLANDIN
+Kristen GRU
+Lisandru ZUCCARELLI
+Héla MOUAKHAR
+Joe VASEEKARAN
+Thierno DIALLO
+Cyriaque DE VAUMAS
