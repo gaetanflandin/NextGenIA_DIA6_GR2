@@ -624,7 +624,74 @@ class Orchestrateur:
         families, and look in your traces for a case where several models agree
         on a wrong value.
         """
-        raise NotImplementedError("vote_k_sur_n: to implement in TD 2 (see the procedure in the docstring).")
+        n = len(traces_question)
+
+        # 2. k must be a strict majority of n
+        if not (n // 2 < k <= n):
+            raise ValueError(
+                f"k={k} is not a strict majority of n={n}: need n//2 < k <= n"
+            )
+
+        # 3. Reject duplicate (provider, model_requested): a duplicate is not a second vote
+        seen = set()
+        for prop in traces_question:
+            provider = prop.provider if hasattr(prop, "provider") else prop["provider"]
+            model_requested = (
+                prop.model_requested
+                if hasattr(prop, "model_requested")
+                else prop["model_requested"]
+            )
+            key = (provider, model_requested)
+            if key in seen:
+                raise ValueError(
+                    f"Duplicate proposal for {provider}:{model_requested}"
+                )
+            seen.add(key)
+
+        # 1. Collect votes: only executed proposals that carry a value vote.
+        #    An error or an unavailable member stays in n and casts no vote.
+        votes = {}  # value -> list of "provider:model_requested"
+        for prop in traces_question:
+            provider = prop.provider if hasattr(prop, "provider") else prop["provider"]
+            model_requested = (
+                prop.model_requested
+                if hasattr(prop, "model_requested")
+                else prop["model_requested"]
+            )
+            value = prop.value if hasattr(prop, "value") else prop["value"]
+            verdict = prop.verdict if hasattr(prop, "verdict") else prop["verdict"]
+
+            # Executed = SQL ran successfully (correct or incorrect verdict)
+            # and carries a non-empty value
+            if verdict not in ("correct", "incorrect"):
+                continue
+            if value is None or value == "":
+                continue
+
+            model_key = f"{provider}:{model_requested}"
+            votes.setdefault(value, []).append(model_key)
+
+        # 4. If a value reaches k votes, return consensus
+        best_count = 0
+        for value, models in votes.items():
+            count = len(models)
+            if count >= k:
+                return {
+                    "consensus": True,
+                    "value": value,
+                    "votes": count,
+                    "models": models,
+                }
+            if count > best_count:
+                best_count = count
+
+        # 5. No consensus: return the largest count, never invent a value
+        return {
+            "consensus": False,
+            "value": None,
+            "votes": best_count,
+            "models": [],
+        }
 
 
 # ==========================================================================
