@@ -624,7 +624,48 @@ class Orchestrateur:
         families, and look in your traces for a case where several models agree
         on a wrong value.
         """
-        raise NotImplementedError("vote_k_sur_n: to implement in TD 2 (see the procedure in the docstring).")
+        n = len(traces_question)
+        if not isinstance(k, int) or isinstance(k, bool) or not (n // 2 < k <= n):
+            raise ValueError("k must be a strict majority of n")
+
+        seen = set()
+        for proposal in traces_question:
+            provider = proposal["provider"] if isinstance(proposal, dict) else getattr(proposal, "provider")
+            model = proposal["model_requested"] if isinstance(proposal, dict) else getattr(proposal, "model_requested")
+            member = (provider, model)
+            if member in seen:
+                raise ValueError("Duplicate panel member: provider:model_requested")
+            seen.add(member)
+
+        counts = {}
+        agreeing_models = {}
+        for proposal in traces_question:
+            if isinstance(proposal, dict):
+                verdict = proposal.get("verdict")
+                value = proposal.get("value")
+                provider = proposal.get("provider")
+                model = proposal.get("model_requested")
+            else:
+                verdict = getattr(proposal, "verdict", None)
+                value = getattr(proposal, "value", None)
+                provider = getattr(proposal, "provider", None)
+                model = getattr(proposal, "model_requested", None)
+
+            if verdict == "executed" and value is not None:
+                counts[value] = counts.get(value, 0) + 1
+                agreeing_models.setdefault(value, []).append(f"{provider}:{model}")
+
+        for value, count in counts.items():
+            if count >= k:
+                return {
+                    "consensus": True,
+                    "value": value,
+                    "votes": count,
+                    "models": agreeing_models[value],
+                }
+
+        largest = max(counts.values(), default=0)
+        return {"consensus": False, "value": None, "votes": largest, "models": []}
 
 
 # ==========================================================================
